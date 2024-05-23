@@ -1,0 +1,86 @@
+<ng-template  #content let-modal>
+	<div class="modal-header bg-dark">
+		<h4 class="modal-title text-white " id="modal-basic-title"> <i class="fa-regular fa-user"></i> Add User Data</h4>
+		
+	</div>
+	<div class="modal-body">
+		<form [formGroup]="userForm"  (ngSubmit)="getUserData()">
+            <div class="form-group">
+                <label for="name">name :</label>
+                <input formControlName="name" type="text"  id="name" class="form-control mb-3" >
+                <span class="text-danger" *ngIf="!userForm.get('name')?.valid&&userForm.get('name')?.touched">
+                    enter a vaild name
+                </span>
+
+               
+            </div>
+            <div class="form-group">
+                <label for="email">email :</label>
+                <input formControlName="email" type="email"  id="email" class="form-control mb-3">
+                <span class="text-danger" *ngIf="!userForm.get('email')?.valid&&userForm.get('email')?.touched">
+                    enter a vaild Email
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="age">age :</label>
+                <input formControlName="age" type="number"  id="age" class="form-control mb-3">
+                <span class="text-danger" *ngIf="!userForm.get('age')?.valid&&userForm.get('age')?.touched">
+                    enter a vaild age
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="Date">birthday :</label>
+                <input appendTo="body" formControlName="calendar"   [owlDateTimeTrigger]="dt1" [owlDateTime]="dt1" class="form-control mb-3 calendar">
+                 <owl-date-time  [pickerType]="'calendar'" #dt1 class="calendar"></owl-date-time>
+                 <span class="text-danger" *ngIf="!userForm.get('age')?.valid&&userForm.get('age')?.touched">
+                    enter a vaild age
+                </span>
+            </div>
+            <button [disabled]="userForm.invalid"  (click)="submitForm()" class="btn btn-outline-dark btnAdd w-100" (click)="modal.close('Save click')">{{isEditMood? 'Edit' : '+ Add'}}</button>
+			
+		</form>
+	</div>
+	
+</ng-template>
+<div class="user_data d-flex justify-content-around ">
+    <h2 class="text-info"> <i class="fa-solid fa-users"></i> User Data</h2>
+    <button (click)="clearData();" class="btn btn-lg btn-outline-info w-25" (click)="open(content)"><i class="fa-regular fa-user"></i>  ADD User</button>
+</div>
+
+
+
+
+
+<table *ngIf="allUser.length>0;else eles" class="table  table-dark w-75 mt-5 mx-auto" >
+    <thead>
+        <th>index</th>
+        <th>name</th>
+        <th>email</th>
+        <th>age</th>
+        <th>calendar</th>
+        <th class="text-warning">Update</th>
+        <th class="text-danger">Delete</th>
+    </thead>
+    
+    <tbody>
+        <tr [class.bg-info]="isOdd" *ngFor="let user of allUser ; let i =index ; let isOdd=odd" >
+            <td>{{i+1}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.age}}</td>
+            <td>{{user.calendar|date}}</td>
+            <td><button class="btn btn-outline-warning " (click)="updateUser(user, content)">Update</button></td>
+            <td><button (click)=" Deleteusert(i)"  class="btn btn-outline-danger">Delete</button></td>
+        </tr>
+    </tbody>
+    
+
+</table>
+<ng-template #eles>
+    <h1 class="text-center text-danger no_data w-50 mx-auto">No Found user data<br/>Place Add New User</h1>
+    
+</ng-template>
+
+
+
+
